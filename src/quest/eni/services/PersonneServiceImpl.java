@@ -16,15 +16,13 @@ public class PersonneServiceImpl implements PersonneService{
 	}
 
 	@Override
-	public Personne getStagOrForm(String login, String pw) {
-		// TODO Auto-generated method stub
-		return null;
+	public Personne getStagOrForm(String login) {
+		return this.daoFactory.getPersonneDAO().getStagOrForm(login);
 	}
 
 	@Override
 	public boolean verifyLogin(String login, String pw) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.daoFactory.getPersonneDAO().isValid(login, pw);
 	}
 
 	@Override
