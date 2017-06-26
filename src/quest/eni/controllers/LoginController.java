@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import quest.eni.entities.Formateur;
 import quest.eni.entities.Personne;
 import quest.eni.entities.Stagiaire;
+import quest.eni.resources.ReponseLogin;
 import quest.eni.services.PersonneService;
 import quest.eni.services.PersonneServiceImpl;
 
@@ -27,22 +28,30 @@ public class LoginController {
 		//Initialisation des obj
 		Response response;
 		boolean isValid = personneService.verifyLogin(login, pw);
+		String rep = "";
+		ReponseLogin repLog;
+		Personne personne = null;
 		
 		if(isValid){
-			Personne personne = personneService.getStagOrForm(login);
+			personne = personneService.getStagOrForm(login);
 			if(personne instanceof Formateur){
-				System.out.println("Je suis un formateur");
+				System.out.println("L'id du formateur est : " + ((Formateur) personne).getIdFormateur());
+				rep = "Je suis un formateur !";
 			}else if(personne instanceof Stagiaire){
-				System.out.println("Je suis un Stagiaire");
+				System.out.println("L'id du stagiaire est : " + ((Stagiaire) personne).getIdStagiaire());
+				rep = "Je suis un stagiaire !";
 			}
+			
 		}else{
-			System.out.println("L'identification a échoué");
+			rep = "L'identification a échoué";
 		}
 		
+		repLog = new ReponseLogin(rep, personne);
+		System.out.println(rep);
+		
         Gson gson = new Gson();
-        String coucou = "COUCOU C'EST MOI !";
                 
-        String json = gson.toJson(coucou);
+        String json = gson.toJson(repLog);
         response = Response.ok()
         		.header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
