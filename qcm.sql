@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 26 Juin 2017 à 15:02
+-- Généré le :  Lun 26 Juin 2017 à 15:15
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -67,7 +67,8 @@ CREATE TABLE `personne` (
 --
 
 INSERT INTO `personne` (`idPersonne`, `identifiant`, `motdepasse`, `nom`, `prenom`, `dob`, `emailPerso`, `emailENI`, `telephone`, `adresse`, `dateInscription`) VALUES
-(1, '1', '1', 'battais', 'alexandre', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26');
+(1, '1', '1', 'battais', 'alexandre', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26'),
+(2, '2', '2', 'battais2', 'alexandre2', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26');
 
 -- --------------------------------------------------------
 
@@ -138,6 +139,13 @@ CREATE TABLE `stagiaire` (
   `idStagiaire` int(11) NOT NULL,
   `Personne_idPersonne` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Contenu de la table `stagiaire`
+--
+
+INSERT INTO `stagiaire` (`idStagiaire`, `Personne_idPersonne`) VALUES
+(1, 2);
 
 -- --------------------------------------------------------
 
@@ -269,7 +277,7 @@ ALTER TABLE `formateur`
 -- AUTO_INCREMENT pour la table `personne`
 --
 ALTER TABLE `personne`
-  MODIFY `idPersonne` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPersonne` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `question`
 --
@@ -284,7 +292,7 @@ ALTER TABLE `reponse`
 -- AUTO_INCREMENT pour la table `stagiaire`
 --
 ALTER TABLE `stagiaire`
-  MODIFY `idStagiaire` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idStagiaire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `test`
 --
