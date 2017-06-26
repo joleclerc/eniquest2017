@@ -36,10 +36,8 @@ public class LoginController {
 				System.out.println("Je suis un Stagiaire");
 			}
 		}else{
-			
+			System.out.println("L'identification a échoué");
 		}
-		
-		
 		
         Gson gson = new Gson();
         String coucou = "COUCOU C'EST MOI !";
