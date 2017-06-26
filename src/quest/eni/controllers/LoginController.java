@@ -26,6 +26,7 @@ public class LoginController {
 		personneService.getStagOrForm(login, pw);
 		
 		
+		
         Gson gson = new Gson();
         String coucou = "COUCOU C'EST MOI !";
                 

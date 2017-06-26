@@ -18,7 +18,9 @@ public class PersonneDAOImpl implements PersonneDAO{
 	private final String SQL_GET_PERSONNE = "SELECT * FROM personne "
 										+ "WHERE identifiant = ?";
 	
-	private final String SQL_GET_FORMATEUR = "SELECT COUNT(*) FROM formateur ";
+	private final String SQL_GET_NB_FORMATEUR = "SELECT COUNT(*) FROM formateur f INNER JOIN personne p "
+										+ "ON f.Personne_idPersonne = p.idPersonne "
+										+ "WHERE p.identifiant = ?";
 	
 	private final String SQL_COUNT_PERSONNE = "SELECT COUNT(*) FROM personne ";
 	
