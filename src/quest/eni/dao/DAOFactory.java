@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class DAOFactory {
 
-    public static final String FICHIER_PROPERTIES        = "/quest/eni/dao/dao.properties";
+    public static final String FICHIER_PROPERTIES        = "quest/eni/dao/dao.properties";
     private static final String PROPERTY_URL             = "url";
     private static final String PROPERTY_NOM_UTILISATEUR = "nom_utilisateur";
     private static final String PROPERTY_MOT_DE_PASSE    = "mdp";

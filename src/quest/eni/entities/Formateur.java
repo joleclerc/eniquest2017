@@ -9,6 +9,11 @@ public class Formateur extends Personne{
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Formateur(int idFormateur) {
+		this();
+		setIdFormateur(idFormateur);
+	}
+	
 	public int getIdFormateur() {
 		return idFormateur;
 	}

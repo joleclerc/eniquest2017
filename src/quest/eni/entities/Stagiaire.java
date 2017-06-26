@@ -8,6 +8,12 @@ public class Stagiaire extends Personne{
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Stagiaire(int idStagiaire) {
+		this();
+		setIdStagiaire(idStagiaire);
+		// TODO Auto-generated constructor stub
+	}
 
 	public int getIdStagiaire() {
 		return idStagiaire;

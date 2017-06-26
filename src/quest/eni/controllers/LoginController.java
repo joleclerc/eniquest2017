@@ -9,6 +9,9 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
 
+import quest.eni.entities.Formateur;
+import quest.eni.entities.Personne;
+import quest.eni.entities.Stagiaire;
 import quest.eni.services.PersonneService;
 import quest.eni.services.PersonneServiceImpl;
 
@@ -23,7 +26,18 @@ public class LoginController {
 		
 		//Initialisation des obj
 		Response response;
-		personneService.getStagOrForm(login, pw);
+		boolean isValid = personneService.verifyLogin(login, pw);
+		
+		if(isValid){
+			Personne personne = personneService.getStagOrForm(login);
+			if(personne instanceof Formateur){
+				System.out.println("Je suis un formateur");
+			}else if(personne instanceof Stagiaire){
+				System.out.println("Je suis un Stagiaire");
+			}
+		}else{
+			
+		}
 		
 		
 		
