@@ -6,6 +6,8 @@ public interface PersonneService {
 
 	public Personne getStagOrForm(String login, String pw);
 	
-	public boolean verifyLogin(Personne personne);
+	public boolean verifyLogin(String login, String pw);
+	
+	public int getNbPersonne();
 	
 }

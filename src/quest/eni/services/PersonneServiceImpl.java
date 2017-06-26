@@ -22,9 +22,14 @@ public class PersonneServiceImpl implements PersonneService{
 	}
 
 	@Override
-	public boolean verifyLogin(Personne personne) {
+	public boolean verifyLogin(String login, String pw) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int getNbPersonne() {
+		return this.daoFactory.getPersonneDAO().getNbPersonne();
 	}
 	
 }

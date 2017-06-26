@@ -70,7 +70,7 @@ public class DAOFactory {
      * 
      * @return : Retourne une instance de UserDao
      */
-    public PersonneDAO getUserDAO() {
+    public PersonneDAO getPersonneDAO() {
         return PersonneDAOImpl.getInstance();
     }
 
