@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 26 Juin 2017 à 13:48
+-- Généré le :  Lun 26 Juin 2017 à 15:02
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -34,6 +34,13 @@ CREATE TABLE `formateur` (
   `Personne_idPersonne` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Contenu de la table `formateur`
+--
+
+INSERT INTO `formateur` (`idFormateur`, `Personne_idPersonne`) VALUES
+(1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -55,6 +62,13 @@ CREATE TABLE `personne` (
   `dateInscription` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Contenu de la table `personne`
+--
+
+INSERT INTO `personne` (`idPersonne`, `identifiant`, `motdepasse`, `nom`, `prenom`, `dob`, `emailPerso`, `emailENI`, `telephone`, `adresse`, `dateInscription`) VALUES
+(1, '1', '1', 'battais', 'alexandre', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26');
+
 -- --------------------------------------------------------
 
 --
@@ -73,12 +87,30 @@ CREATE TABLE `question` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `reponse`
+--
+
+DROP TABLE IF EXISTS `reponse`;
+CREATE TABLE `reponse` (
+  `idReponse` int(11) NOT NULL,
+  `libelleReponse` varchar(255) DEFAULT NULL,
+  `lienImage` varchar(255) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `isValid` tinyint(1) NOT NULL,
+  `Question_idQuestion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `reponse_stagiaire`
 --
 
 DROP TABLE IF EXISTS `reponse_stagiaire`;
 CREATE TABLE `reponse_stagiaire` (
-  `idReponseStagiaire` int(11) NOT NULL
+  `position` int(11) NOT NULL,
+  `Test_idTest` int(11) NOT NULL,
+  `Reponse_idReponse` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -177,22 +209,32 @@ ALTER TABLE `question`
   ADD PRIMARY KEY (`idQuestion`);
 
 --
+-- Index pour la table `reponse`
+--
+ALTER TABLE `reponse`
+  ADD PRIMARY KEY (`idReponse`),
+  ADD KEY `Question_idQuestion` (`Question_idQuestion`);
+
+--
 -- Index pour la table `reponse_stagiaire`
 --
 ALTER TABLE `reponse_stagiaire`
-  ADD PRIMARY KEY (`idReponseStagiaire`);
+  ADD PRIMARY KEY (`Test_idTest`,`Reponse_idReponse`),
+  ADD KEY `Reponse_idReponse` (`Reponse_idReponse`);
 
 --
 -- Index pour la table `section`
 --
 ALTER TABLE `section`
-  ADD PRIMARY KEY (`Test_test_id`,`Theme_idTheme`);
+  ADD PRIMARY KEY (`Test_test_id`,`Theme_idTheme`),
+  ADD KEY `Theme_idTheme` (`Theme_idTheme`);
 
 --
 -- Index pour la table `stagiaire`
 --
 ALTER TABLE `stagiaire`
-  ADD PRIMARY KEY (`idStagiaire`);
+  ADD PRIMARY KEY (`idStagiaire`),
+  ADD KEY `Personne_idPersonne` (`Personne_idPersonne`);
 
 --
 -- Index pour la table `test`
@@ -211,7 +253,8 @@ ALTER TABLE `theme`
 -- Index pour la table `type_test`
 --
 ALTER TABLE `type_test`
-  ADD PRIMARY KEY (`id_type_test`);
+  ADD PRIMARY KEY (`id_type_test`),
+  ADD KEY `Test_test_id` (`Test_test_id`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
@@ -221,22 +264,22 @@ ALTER TABLE `type_test`
 -- AUTO_INCREMENT pour la table `formateur`
 --
 ALTER TABLE `formateur`
-  MODIFY `idFormateur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFormateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `personne`
 --
 ALTER TABLE `personne`
-  MODIFY `idPersonne` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPersonne` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `question`
 --
 ALTER TABLE `question`
   MODIFY `idQuestion` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `reponse_stagiaire`
+-- AUTO_INCREMENT pour la table `reponse`
 --
-ALTER TABLE `reponse_stagiaire`
-  MODIFY `idReponseStagiaire` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `reponse`
+  MODIFY `idReponse` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `stagiaire`
 --
@@ -266,6 +309,38 @@ ALTER TABLE `type_test`
 --
 ALTER TABLE `formateur`
   ADD CONSTRAINT `formateur_ibfk_1` FOREIGN KEY (`Personne_idPersonne`) REFERENCES `personne` (`idPersonne`);
+
+--
+-- Contraintes pour la table `reponse`
+--
+ALTER TABLE `reponse`
+  ADD CONSTRAINT `reponse_ibfk_1` FOREIGN KEY (`Question_idQuestion`) REFERENCES `question` (`idQuestion`);
+
+--
+-- Contraintes pour la table `reponse_stagiaire`
+--
+ALTER TABLE `reponse_stagiaire`
+  ADD CONSTRAINT `reponse_stagiaire_ibfk_1` FOREIGN KEY (`Reponse_idReponse`) REFERENCES `reponse` (`idReponse`),
+  ADD CONSTRAINT `reponse_stagiaire_ibfk_2` FOREIGN KEY (`Test_idTest`) REFERENCES `test` (`idTest`);
+
+--
+-- Contraintes pour la table `section`
+--
+ALTER TABLE `section`
+  ADD CONSTRAINT `section_ibfk_1` FOREIGN KEY (`Test_test_id`) REFERENCES `test` (`idTest`),
+  ADD CONSTRAINT `section_ibfk_2` FOREIGN KEY (`Theme_idTheme`) REFERENCES `theme` (`idTheme`);
+
+--
+-- Contraintes pour la table `stagiaire`
+--
+ALTER TABLE `stagiaire`
+  ADD CONSTRAINT `stagiaire_ibfk_1` FOREIGN KEY (`Personne_idPersonne`) REFERENCES `personne` (`idPersonne`);
+
+--
+-- Contraintes pour la table `type_test`
+--
+ALTER TABLE `type_test`
+  ADD CONSTRAINT `type_test_ibfk_1` FOREIGN KEY (`Test_test_id`) REFERENCES `test` (`idTest`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
