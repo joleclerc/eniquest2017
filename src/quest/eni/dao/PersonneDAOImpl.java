@@ -63,6 +63,7 @@ public class PersonneDAOImpl implements PersonneDAO{
 		try {
 			con = daoFactory.getConnection();
 			stmt = con.prepareStatement(SQL_VERIFY_USER);
+			System.out.println("Login = " + login + " | Mdp : " + pw);
 			stmt.setString(1, login);
 			stmt.setString(2, pw);
 			

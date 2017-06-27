@@ -25,29 +25,24 @@ public class LoginController {
     @Produces(MediaType.APPLICATION_JSON)
 	public Response verifyLogin(@QueryParam("login") String login, @QueryParam("pw") String pw) {
 		
+		System.out.println("Entrée dans la méthode : verifyLogin() ");
 		//Initialisation des obj
 		Response response;
 		boolean isValid = personneService.verifyLogin(login, pw);
-		String rep = "";
+		boolean isFormateur = false;
 		ReponseLogin repLog;
 		Personne personne = null;
+		
 		
 		if(isValid){
 			personne = personneService.getStagOrForm(login);
 			if(personne instanceof Formateur){
-				System.out.println("L'id du formateur est : " + ((Formateur) personne).getIdFormateur());
-				rep = "Je suis un formateur !";
-			}else if(personne instanceof Stagiaire){
-				System.out.println("L'id du stagiaire est : " + ((Stagiaire) personne).getIdStagiaire());
-				rep = "Je suis un stagiaire !";
+				isFormateur = true;
 			}
-			
-		}else{
-			rep = "L'identification a échoué";
+			personne.setMotDePasse(null);
 		}
 		
-		repLog = new ReponseLogin(rep, personne);
-		System.out.println(rep);
+		repLog = new ReponseLogin(personne, isValid, isFormateur);
 		
         Gson gson = new Gson();
                 

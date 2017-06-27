@@ -4,25 +4,39 @@ import quest.eni.entities.Personne;
 
 public class ReponseLogin {
 
-	private String rep;
 	private Personne pers;
+	private boolean isValid;
+	private boolean isFormateur;
 	
-	public ReponseLogin(String rep, Personne pers){
+
+	public ReponseLogin(Personne pers, boolean isValid, boolean isFormateur){
 		super();
-		setRep(rep);
 		setPers(pers);
+		setValid(isValid);
+		setFormateur(isFormateur);
+		
+	}
+	
+	public boolean isValid() {
+		return isValid;
+	}
+	
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
+	}
+	
+	public boolean isFormateur() {
+		return isFormateur;
+	}
+	
+	public void setFormateur(boolean isFormateur) {
+		this.isFormateur = isFormateur;
 	}
 	
 	public ReponseLogin(){
 		super();
 	}
-	
-	public String getRep() {
-		return rep;
-	}
-	public void setRep(String rep) {
-		this.rep = rep;
-	}
+
 	public Personne getPers() {
 		return pers;
 	}
