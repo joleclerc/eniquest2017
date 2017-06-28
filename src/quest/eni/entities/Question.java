@@ -1,5 +1,7 @@
 package quest.eni.entities;
 
+import java.util.List;
+
 public class Question {
 
 	private int idQuestion;
@@ -7,6 +9,7 @@ public class Question {
 	private String lienImage;
 	private String typeReponse;
 	private Theme theme;
+	private List<Reponse> reponses;
 	
 	public Question() {
 		super();
@@ -51,6 +54,19 @@ public class Question {
 
 	public void setTheme(Theme theme) {
 		this.theme = theme;
+	}
+
+	public List<Reponse> getReponses() {
+		return reponses;
+	}
+
+	public void setReponses(List<Reponse> reponses) {
+		this.reponses = reponses;
+	}
+	
+	@Override
+	public String toString() {
+		return this.idQuestion + " | " + this.intitule + " | " + this.theme.getIdTheme() + " | " + this.typeReponse;
 	}
 	
 }

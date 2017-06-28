@@ -90,5 +90,13 @@ public class DAOFactory {
     public QuestionDAO getQuestionDAO() {
         return QuestionDAOImpl.getInstance();
     }
-    
+
+    /**
+     * Récupération d'un instance de ThemeDAO
+     * 
+     * @return : Retourne une instance de ThemeDAO
+     */
+    public ReponseDAO getReponseDAO() {
+        return ReponseDAOImpl.getInstance();
+    }
 }

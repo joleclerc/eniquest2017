@@ -1,11 +1,15 @@
 package quest.eni.entities;
 
+import quest.eni.services.ThemeService;
+import quest.eni.services.ThemeServiceImpl;
+
 public class Theme {
 
 	private int idTheme;
 	private String libelleTheme;
 	private String description;
-	private String nbrQuestion;
+	private int nbrQuestion;
+	private static ThemeService themeService = ThemeServiceImpl.getInstance();
 	
 	public Theme() {
 		super();
@@ -13,7 +17,11 @@ public class Theme {
 	
 	public Theme(int idTheme) {
 		this();
+		Theme t = themeService.getThemeById(idTheme);
 		this.setIdTheme(idTheme);
+		this.setDescription(t.getDescription());
+		this.setLibelleTheme(t.getLibelleTheme());
+		this.setNbrQuestion(t.getNbrQuestion());
 	}
 	
 	public int getIdTheme() {
@@ -34,10 +42,10 @@ public class Theme {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getNbrQuestion() {
+	public int getNbrQuestion() {
 		return nbrQuestion;
 	}
-	public void setNbrQuestion(String nbrQuestion) {
+	public void setNbrQuestion(int nbrQuestion) {
 		this.nbrQuestion = nbrQuestion;
 	}
 	

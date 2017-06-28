@@ -1,5 +1,8 @@
 package quest.eni.entities;
 
+import quest.eni.services.ReponseService;
+import quest.eni.services.ReponseServiceImpl;
+
 public class Reponse {
 
 	private int idReponse;
@@ -8,12 +11,23 @@ public class Reponse {
 	private int position;
 	private int isValid;
 	private Question question;
+	private static ReponseService reponseService = ReponseServiceImpl.getInstance();
 	
 	public Reponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public Reponse(int idReponse) {
+		this();
+		Reponse r = reponseService.getReponseByIdWithoutQuestion(idReponse);
+		this.setIdReponse(idReponse);
+		this.setLibelleReponse(r.getLibelleReponse());
+		this.setLienImage(r.getLienImage());
+		this.setIsValid(r.getIsValid());
+		this.setPosition(r.getPosition());
+	}
+	
 	public int getIdReponse() {
 		return idReponse;
 	}
@@ -62,6 +76,9 @@ public class Reponse {
 		this.question = question;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "ID : " + this.idReponse + " | " + this.libelleReponse + " | isValid : " + this.isValid;
+	}
 	
 }

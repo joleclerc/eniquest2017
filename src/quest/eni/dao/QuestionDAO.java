@@ -8,12 +8,14 @@ public interface QuestionDAO {
 
 	public List<Question> getAllQuestion();
 	
-	public void saveQuestion(Question Question);
+	public int saveQuestion(Question question);
 	
-	public Question getQuestionById(int idQuestion);
+	public Question getQuestionReponseById(int idQuestion);
 	
 	public int deleteQuestion(int idQuestion);
 	
 	public void updateQuestion(Question Question);
+	
+	public List<Question> getAllByTheme(int idTheme);
 	
 }

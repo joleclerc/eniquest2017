@@ -19,9 +19,12 @@ public class ThemeDAOImpl implements ThemeDAO{
 									+ "WHERE idTheme  = ?";
 	private final String DELETE_THEME = "DELETE FROM theme WHERE idTheme = ?";
 	private final String INSERT_THEME = "INSERT INTO THEME(libelleTheme, description) "
-									+ "VALUE(?,?)";
+									+ "VALUES(?,?)";
 	private final String UPDATE_THEME = "UPDATE THEME SET libelleTheme = ?, description = ? "
 									+ "WHERE idTheme = ?";
+	
+	private final String GET_NB_QUESTION = "SELECT COUNT(*) FROM question "
+									+ "WHERE Theme_idTheme = ?";
 	
 	public ThemeDAOImpl() {
 	
@@ -202,6 +205,37 @@ public class ThemeDAOImpl implements ThemeDAO{
 		}
 		
 		
+	}
+
+	@Override
+	public int getNbQuestionByTheme(Theme theme) {
+		
+		Connection con = null;
+		PreparedStatement stmt;
+		int res = -1;
+		
+		try {
+			con = daoFactory.getConnection();
+			stmt = con.prepareStatement(GET_NB_QUESTION);
+			stmt.setInt(1, theme.getIdTheme());
+			
+			// execute la requete
+			ResultSet rsCount = stmt.executeQuery();
+			
+			rsCount.next();
+			
+			//Récupération des résultats
+			res = rsCount.getInt(1);
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
 	}
 	
 }

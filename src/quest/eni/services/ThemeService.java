@@ -13,5 +13,7 @@ public interface ThemeService {
 	public Theme getThemeById(int idTheme);
 	
 	public int deleteTheme(int idTheme);
+
+	public int getNbQuestionByTheme(Theme theme);
 	
 }

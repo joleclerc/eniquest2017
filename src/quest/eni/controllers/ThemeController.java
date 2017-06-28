@@ -17,7 +17,7 @@ import quest.eni.entities.Theme;
 import quest.eni.services.ThemeService;
 import quest.eni.services.ThemeServiceImpl;
 
-@Path("/theme")
+@Path("/themes")
 public class ThemeController {
 	
 	private static ThemeService themeService = ThemeServiceImpl.getInstance();

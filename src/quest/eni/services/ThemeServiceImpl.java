@@ -19,7 +19,13 @@ public class ThemeServiceImpl implements ThemeService{
 
 	@Override
 	public List<Theme> getAllTheme() {
-		return this.daoFactory.getThemeDAO().getAllTheme();
+		List<Theme> themes = this.daoFactory.getThemeDAO().getAllTheme();
+		for(Theme t : themes){
+			int nbQuestion = this.getNbQuestionByTheme(t);
+			t.setNbrQuestion(nbQuestion);
+		}
+		
+		return themes;
 	}
 
 	@Override
@@ -39,6 +45,11 @@ public class ThemeServiceImpl implements ThemeService{
 	public int deleteTheme(int idTheme) {
 		return this.daoFactory.getThemeDAO().deleteTheme(idTheme);
 		
+	}
+
+	@Override
+	public int getNbQuestionByTheme(Theme theme) {
+		return this.daoFactory.getThemeDAO().getNbQuestionByTheme(theme);
 	}
 	
 }

@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 
 import quest.eni.entities.Formateur;
 import quest.eni.entities.Personne;
-import quest.eni.entities.Stagiaire;
 import quest.eni.resources.ReponseLogin;
 import quest.eni.services.PersonneService;
 import quest.eni.services.PersonneServiceImpl;

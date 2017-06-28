@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.ws.rs.core.Form;
-
 import quest.eni.entities.Formateur;
 import quest.eni.entities.Personne;
 import quest.eni.entities.Stagiaire;
@@ -125,6 +123,7 @@ public class PersonneDAOImpl implements PersonneDAO{
 		return res;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public Personne getStagOrForm(String login) {
 		

@@ -16,4 +16,6 @@ public interface ThemeDAO {
 	
 	public void updateTheme(Theme theme);
 	
+	public int getNbQuestionByTheme(Theme theme);
+	
 }
