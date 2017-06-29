@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 26 Juin 2017 à 15:15
+-- Généré le :  Jeu 29 Juin 2017 à 14:26
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -19,8 +19,45 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `qcm`
 --
-CREATE DATABASE IF NOT EXISTS `qcm` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS `qcm` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `qcm`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `epreuve`
+--
+
+DROP TABLE IF EXISTS `epreuve`;
+CREATE TABLE `epreuve` (
+  `idEpreuve` int(10) NOT NULL,
+  `nbrQuestion` int(10) DEFAULT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `libelleEpreuve` varchar(255) NOT NULL,
+  `tempsEpreuve` int(10) NOT NULL,
+  `typeEpreuve` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `epreuve`
+--
+
+INSERT INTO `epreuve` (`idEpreuve`, `nbrQuestion`, `dateCreation`, `libelleEpreuve`, `tempsEpreuve`, `typeEpreuve`) VALUES
+(1, 1510, '2017-06-29 15:07:53', 'Epreuve de merde 1', 360, 'ECF'),
+(2, 15, '2017-06-29 15:07:53', 'Epreuve de merde 2', 2, 'Test');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `epreuvestagiaire`
+--
+
+DROP TABLE IF EXISTS `epreuvestagiaire`;
+CREATE TABLE `epreuvestagiaire` (
+  `idEpreuveStagiaire` int(10) NOT NULL,
+  `idEpreuve` int(10) NOT NULL,
+  `idStagiaire` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -32,7 +69,7 @@ DROP TABLE IF EXISTS `formateur`;
 CREATE TABLE `formateur` (
   `idFormateur` int(11) NOT NULL,
   `Personne_idPersonne` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `formateur`
@@ -60,15 +97,15 @@ CREATE TABLE `personne` (
   `telephone` varchar(20) DEFAULT NULL,
   `adresse` varchar(500) DEFAULT NULL,
   `dateInscription` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `personne`
 --
 
 INSERT INTO `personne` (`idPersonne`, `identifiant`, `motdepasse`, `nom`, `prenom`, `dob`, `emailPerso`, `emailENI`, `telephone`, `adresse`, `dateInscription`) VALUES
-(1, '1', '1', 'battais', 'alexandre', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26'),
-(2, '2', '2', 'battais2', 'alexandre2', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26');
+(1, 'admin', 'admin', 'battais', 'alexandre', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26'),
+(2, 'eleve', 'eleve', 'battais2', 'alexandre2', '2017-06-26', 'alexandre.battais@eni.com', 'alexandre.battais@eni.com', NULL, NULL, '2017-06-26');
 
 -- --------------------------------------------------------
 
@@ -79,11 +116,19 @@ INSERT INTO `personne` (`idPersonne`, `identifiant`, `motdepasse`, `nom`, `preno
 DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question` (
   `idQuestion` int(11) NOT NULL,
-  `intitule` varchar(100) NOT NULL,
+  `intitule` varchar(255) NOT NULL,
   `lienImage` varchar(255) DEFAULT NULL,
-  `typeReponse` int(11) NOT NULL,
+  `typeReponse` varchar(25) NOT NULL,
   `Theme_idTheme` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `question`
+--
+
+INSERT INTO `question` (`idQuestion`, `intitule`, `lienImage`, `typeReponse`, `Theme_idTheme`) VALUES
+(1, 'Quel est la couleur du cheval blanc d\'Henry IV ?', NULL, 'unique', 12),
+(12, 'Question de merde !!!!', NULL, 'order', 12);
 
 -- --------------------------------------------------------
 
@@ -99,7 +144,18 @@ CREATE TABLE `reponse` (
   `position` int(11) DEFAULT NULL,
   `isValid` tinyint(1) NOT NULL,
   `Question_idQuestion` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `reponse`
+--
+
+INSERT INTO `reponse` (`idReponse`, `libelleReponse`, `lienImage`, `position`, `isValid`, `Question_idQuestion`) VALUES
+(1, 'Bleu', NULL, NULL, 0, 1),
+(2, 'Blanc', NULL, NULL, 0, 1),
+(3, 'Rouge', NULL, NULL, 1, 1),
+(4, 'Marron', NULL, NULL, 0, 1),
+(6, 'ree', NULL, 1, 0, 12);
 
 -- --------------------------------------------------------
 
@@ -112,7 +168,7 @@ CREATE TABLE `reponse_stagiaire` (
   `position` int(11) NOT NULL,
   `Test_idTest` int(11) NOT NULL,
   `Reponse_idReponse` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -122,11 +178,18 @@ CREATE TABLE `reponse_stagiaire` (
 
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE `section` (
-  `Test_test_id` int(11) NOT NULL,
-  `Theme_idTheme` int(11) NOT NULL,
   `idSection` int(11) NOT NULL,
-  `nbrQuestion` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `nbrQuestion` int(11) NOT NULL,
+  `idEpreuve` int(10) NOT NULL,
+  `idTheme` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `section`
+--
+
+INSERT INTO `section` (`idSection`, `nbrQuestion`, `idEpreuve`, `idTheme`) VALUES
+(1, 20, 1, 12);
 
 -- --------------------------------------------------------
 
@@ -138,7 +201,7 @@ DROP TABLE IF EXISTS `stagiaire`;
 CREATE TABLE `stagiaire` (
   `idStagiaire` int(11) NOT NULL,
   `Personne_idPersonne` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `stagiaire`
@@ -156,14 +219,9 @@ INSERT INTO `stagiaire` (`idStagiaire`, `Personne_idPersonne`) VALUES
 DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
   `idTest` int(11) NOT NULL,
-  `nbrQuestion` int(11) NOT NULL,
-  `dateCreation` date NOT NULL,
-  `libelleTest` varchar(255) NOT NULL,
-  `tempsTest` time NOT NULL,
-  `Stagiaire_idStagiaire` int(11) NOT NULL,
-  `ReponseStagiaire_idStagiaire` int(11) NOT NULL,
-  `test_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idEpreuveStagiaire` int(10) NOT NULL,
+  `ReponseStagiaire_idStagiaire` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -176,8 +234,18 @@ CREATE TABLE `theme` (
   `idTheme` int(11) NOT NULL,
   `libelleTheme` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `nbrQuestion` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `nbrQuestion` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `theme`
+--
+
+INSERT INTO `theme` (`idTheme`, `libelleTheme`, `description`, `nbrQuestion`) VALUES
+(4, 'zeretgdbd', 'xvwsvc<sdf', NULL),
+(7, 'libelle création', 'desc', NULL),
+(11, 'fdf', 'dd', NULL),
+(12, 'Ne pas effacer', 'Description du thème à ne pas effacer', NULL);
 
 -- --------------------------------------------------------
 
@@ -190,11 +258,23 @@ CREATE TABLE `type_test` (
   `id_type_test` int(11) NOT NULL,
   `libelleTypeTest` varchar(255) NOT NULL,
   `Test_test_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Index pour les tables exportées
 --
+
+--
+-- Index pour la table `epreuve`
+--
+ALTER TABLE `epreuve`
+  ADD PRIMARY KEY (`idEpreuve`);
+
+--
+-- Index pour la table `epreuvestagiaire`
+--
+ALTER TABLE `epreuvestagiaire`
+  ADD PRIMARY KEY (`idEpreuveStagiaire`);
 
 --
 -- Index pour la table `formateur`
@@ -234,8 +314,7 @@ ALTER TABLE `reponse_stagiaire`
 -- Index pour la table `section`
 --
 ALTER TABLE `section`
-  ADD PRIMARY KEY (`Test_test_id`,`Theme_idTheme`),
-  ADD KEY `Theme_idTheme` (`Theme_idTheme`);
+  ADD PRIMARY KEY (`idSection`);
 
 --
 -- Index pour la table `stagiaire`
@@ -248,8 +327,7 @@ ALTER TABLE `stagiaire`
 -- Index pour la table `test`
 --
 ALTER TABLE `test`
-  ADD PRIMARY KEY (`idTest`),
-  ADD UNIQUE KEY `test_id` (`test_id`);
+  ADD PRIMARY KEY (`idTest`);
 
 --
 -- Index pour la table `theme`
@@ -269,6 +347,16 @@ ALTER TABLE `type_test`
 --
 
 --
+-- AUTO_INCREMENT pour la table `epreuve`
+--
+ALTER TABLE `epreuve`
+  MODIFY `idEpreuve` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT pour la table `epreuvestagiaire`
+--
+ALTER TABLE `epreuvestagiaire`
+  MODIFY `idEpreuveStagiaire` int(10) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT pour la table `formateur`
 --
 ALTER TABLE `formateur`
@@ -282,12 +370,17 @@ ALTER TABLE `personne`
 -- AUTO_INCREMENT pour la table `question`
 --
 ALTER TABLE `question`
-  MODIFY `idQuestion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idQuestion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `reponse`
 --
 ALTER TABLE `reponse`
-  MODIFY `idReponse` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idReponse` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT pour la table `section`
+--
+ALTER TABLE `section`
+  MODIFY `idSection` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `stagiaire`
 --
@@ -302,7 +395,7 @@ ALTER TABLE `test`
 -- AUTO_INCREMENT pour la table `theme`
 --
 ALTER TABLE `theme`
-  MODIFY `idTheme` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idTheme` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `type_test`
 --
@@ -330,13 +423,6 @@ ALTER TABLE `reponse`
 ALTER TABLE `reponse_stagiaire`
   ADD CONSTRAINT `reponse_stagiaire_ibfk_1` FOREIGN KEY (`Reponse_idReponse`) REFERENCES `reponse` (`idReponse`),
   ADD CONSTRAINT `reponse_stagiaire_ibfk_2` FOREIGN KEY (`Test_idTest`) REFERENCES `test` (`idTest`);
-
---
--- Contraintes pour la table `section`
---
-ALTER TABLE `section`
-  ADD CONSTRAINT `section_ibfk_1` FOREIGN KEY (`Test_test_id`) REFERENCES `test` (`idTest`),
-  ADD CONSTRAINT `section_ibfk_2` FOREIGN KEY (`Theme_idTheme`) REFERENCES `theme` (`idTheme`);
 
 --
 -- Contraintes pour la table `stagiaire`
