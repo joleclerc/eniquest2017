@@ -1,6 +1,9 @@
 package quest.eni.services;
 
+import java.util.List;
+
 import quest.eni.dao.DAOFactory;
+import quest.eni.entities.Question;
 import quest.eni.entities.Reponse;
 
 public class ReponseServiceImpl implements ReponseService{
@@ -28,6 +31,11 @@ public class ReponseServiceImpl implements ReponseService{
 	@Override
 	public void updateReponse(Reponse reponse) {
 		this.daoFactory.getReponseDAO().updateReponse(reponse);
+	}
+
+	@Override
+	public List<Reponse> getReponseForQuestion(Question question) {
+		return this.daoFactory.getReponseDAO().getReponseForQuestion(question);
 	}
 
 		

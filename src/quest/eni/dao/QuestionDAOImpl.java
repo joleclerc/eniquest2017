@@ -285,6 +285,7 @@ public class QuestionDAOImpl implements QuestionDAO{
 			// execute la requete
 			ResultSet rsMax = stmt.executeQuery();
 			
+			rsMax.next();
 			res = rsMax.getInt(1);
 			
 			con.close();

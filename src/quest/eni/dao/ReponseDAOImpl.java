@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import quest.eni.entities.Question;
 import quest.eni.entities.Reponse;
-import quest.eni.entities.Theme;
 
 public class ReponseDAOImpl implements ReponseDAO{
 
@@ -15,8 +17,11 @@ public class ReponseDAOImpl implements ReponseDAO{
 	private final String SQL_GET_BY_ID = "SELECT r.libelleReponse, r.lienImage, "
 									+ "r.position, r.isValid FROM reponse r "
 									+ "WHERE idReponse  = ?";
+	private final String SQL_GET_BY_QUESTION = "SELECT r.libelleReponse, r.lienImage, "
+									+ "r.position, r.isValid, r.idReponse FROM reponse r "
+									+ "WHERE Question_idQuestion  = ?";
 	private final String INSERT_REPONSE = "INSERT INTO reponse(libelleReponse, lienImage, position, "
-									+ " isValid) VALUES (?,?,?,?)";
+									+ " isValid, Question_idQuestion) VALUES (?,?,?,?,?)";
 	private final String UPDATE_REPONSE = "UPDATE reponse "
 									+ "SET libelleReponse = ?, lienImage = ?, position = ?, "
 									+ "isValid = ? WHERE idReponse = ?";
@@ -76,6 +81,7 @@ public class ReponseDAOImpl implements ReponseDAO{
 			stmt.setString(2, reponse.getLienImage());
 			stmt.setInt(3, reponse.getPosition());
 			stmt.setInt(4, reponse.getIsValid());
+			stmt.setInt(5, reponse.getQuestion().getIdQuestion());
 			
 			// execute la requete
 			boolean res = stmt.execute();
@@ -127,6 +133,42 @@ public class ReponseDAOImpl implements ReponseDAO{
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public List<Reponse> getReponseForQuestion(Question question) {
+		List<Reponse> reponses = new ArrayList<Reponse>();
+//		Reponse reponse = new Reponse();
+		Connection con = null;
+		PreparedStatement stmt;
+		
+		try {
+			con = daoFactory.getConnection();
+			stmt = con.prepareStatement(SQL_GET_BY_QUESTION);
+			stmt.setInt(1, question.getIdQuestion());
+			
+			// execute la requete
+			ResultSet rsReponse = stmt.executeQuery();
+			
+			while(rsReponse.next()){
+				Reponse reponse = new Reponse();
+				reponse.setLibelleReponse(rsReponse.getString(1));
+				reponse.setLienImage(rsReponse.getString(2));
+				reponse.setPosition(rsReponse.getInt(3));
+				reponse.setIsValid(rsReponse.getInt(4));
+				reponse.setIdReponse(rsReponse.getInt(5));
+				reponses.add(reponse);
+			}
+			
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reponses;
 	}
 
 }

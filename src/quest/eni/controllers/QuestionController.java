@@ -1,5 +1,6 @@
 package quest.eni.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -11,9 +12,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONArray;
+
 import com.google.gson.Gson;
 
 import quest.eni.entities.Question;
+import quest.eni.entities.Reponse;
 import quest.eni.entities.Theme;
 import quest.eni.resources.ReponseQuestionTheme;
 import quest.eni.services.QuestionService;
@@ -63,6 +67,12 @@ private static ReponseService reponseService = ReponseServiceImpl.getInstance();
 		//Initialisation des obj
 		Response response;
 		List<Question> questions = questionService.getAllByTheme(idTheme);
+		
+		for(Question q  : questions){
+			List<Reponse> reponses = reponseService.getReponseForQuestion(q);
+			q.setReponses(reponses);
+		}
+		
 		Theme theme = themeService.getThemeById(idTheme);
 		ReponseQuestionTheme rep = new ReponseQuestionTheme(questions, theme);
 		
@@ -91,6 +101,7 @@ private static ReponseService reponseService = ReponseServiceImpl.getInstance();
 			@FormParam("idTheme") int idTheme,
 			@FormParam("reponses") String reponses) {
 		
+		
 		//Initialisation des obj
 		Response response;
 		Question question = new Question();
@@ -100,10 +111,41 @@ private static ReponseService reponseService = ReponseServiceImpl.getInstance();
 		question.setLienImage(lienImage);
 		question.setTheme(new Theme(idTheme));
 
-//		JSONObject recoData = new JSONObject(reponses);
 		System.out.println("Question : " + question.toString());
-		System.out.println(reponses);
-//		int idInserted = questionService.saveQuestion(question);
+	
+		System.out.println("Reponses : " + reponses);
+
+//		String rep = "[{\"idReponse\":0,\"intituleReponse\":\"rerer\",\"isValid\":false,\"position\":\"null\"},{\"idReponse\":0,\"intituleReponse\":\"eeeeeeeeeeeeeeeett\",\"isValid\":false,\"position\":\"null\"}]";
+		List<Reponse> listReponses = new ArrayList<Reponse>();
+		JSONArray arr = new JSONArray(reponses);
+		for (int i = 0; i < arr.length(); i++)
+		{
+			Reponse reponse = new Reponse();
+			int idReponse = arr.getJSONObject(i).getInt("idReponse");
+		    String libelle = arr.getJSONObject(i).getString("libelleReponse");
+		    boolean isValid = arr.getJSONObject(i).getBoolean("isValid");
+		    int position = arr.getJSONObject(i).getInt("position");
+		    System.out.println("Reponse : " + libelle + " | isValid : " + isValid + " | position : " + position);
+		    reponse.setIdReponse(idReponse);
+		    reponse.setLibelleReponse(libelle);
+		    if(isValid)
+		    	reponse.setIsValid(1);
+		    else
+		    	reponse.setIsValid(0);
+		    reponse.setPosition(position);
+		    
+		    listReponses.add(reponse);
+		    
+		}
+		int idInserted = questionService.saveQuestion(question);
+		Question q = new Question();
+		q.setIdQuestion(idInserted);
+		
+		
+		for(Reponse r : listReponses){
+			r.setQuestion(q);
+			reponseService.insertReponse(r);
+		}
 //		System.out.println("Id inséré de la question : " + idInserted);
 		
         Gson gson = new Gson();

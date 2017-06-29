@@ -99,4 +99,22 @@ public class DAOFactory {
     public ReponseDAO getReponseDAO() {
         return ReponseDAOImpl.getInstance();
     }
+    
+    /**
+     * Récupération d'un instance de EpreuveDAO
+     * 
+     * @return : Retourne une instance de EpreuveDAO
+     */
+    public EpreuveDAO getEpreuveDAO() {
+        return EpreuveDAOImpl.getInstance();
+    }
+    
+    /**
+     * Récupération d'un instance de EpreuveDAO
+     * 
+     * @return : Retourne une instance de EpreuveDAO
+     */
+    public SectionDAO getSectionDAO() {
+        return SectionDAOImpl.getInstance();
+    }
 }
