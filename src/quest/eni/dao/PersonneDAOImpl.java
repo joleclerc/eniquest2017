@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.ws.rs.core.Form;
-
 import quest.eni.entities.Formateur;
 import quest.eni.entities.Personne;
 import quest.eni.entities.Stagiaire;
@@ -63,6 +61,7 @@ public class PersonneDAOImpl implements PersonneDAO{
 		try {
 			con = daoFactory.getConnection();
 			stmt = con.prepareStatement(SQL_VERIFY_USER);
+			System.out.println("Login = " + login + " | Mdp : " + pw);
 			stmt.setString(1, login);
 			stmt.setString(2, pw);
 			
@@ -124,6 +123,7 @@ public class PersonneDAOImpl implements PersonneDAO{
 		return res;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public Personne getStagOrForm(String login) {
 		

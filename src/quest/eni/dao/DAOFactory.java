@@ -65,12 +65,56 @@ public class DAOFactory {
     }
 
     /**
-     * Récupération d'un instance de UserDao
+     * Récupération d'un instance de PersonneDAO
      * 
-     * @return : Retourne une instance de UserDao
+     * @return : Retourne une instance de PersonneDAO
      */
     public PersonneDAO getPersonneDAO() {
         return PersonneDAOImpl.getInstance();
     }
+    
+    /**
+     * Récupération d'un instance de ThemeDAO
+     * 
+     * @return : Retourne une instance de ThemeDAO
+     */
+    public ThemeDAO getThemeDAO() {
+        return ThemeDAOImpl.getInstance();
+    }
 
+    /**
+     * Récupération d'un instance de ThemeDAO
+     * 
+     * @return : Retourne une instance de ThemeDAO
+     */
+    public QuestionDAO getQuestionDAO() {
+        return QuestionDAOImpl.getInstance();
+    }
+
+    /**
+     * Récupération d'un instance de ThemeDAO
+     * 
+     * @return : Retourne une instance de ThemeDAO
+     */
+    public ReponseDAO getReponseDAO() {
+        return ReponseDAOImpl.getInstance();
+    }
+    
+    /**
+     * Récupération d'un instance de EpreuveDAO
+     * 
+     * @return : Retourne une instance de EpreuveDAO
+     */
+    public EpreuveDAO getEpreuveDAO() {
+        return EpreuveDAOImpl.getInstance();
+    }
+    
+    /**
+     * Récupération d'un instance de EpreuveDAO
+     * 
+     * @return : Retourne une instance de EpreuveDAO
+     */
+    public SectionDAO getSectionDAO() {
+        return SectionDAOImpl.getInstance();
+    }
 }

@@ -10,8 +10,7 @@ import com.google.gson.Gson;
 
 @Path("/hello")
 public class HelloController {
-
-
+	
 //	@POST
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
