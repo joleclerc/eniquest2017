@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <title>Liste des épreuves</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="index.html">Accueil</a>
+                            </li>
+                            <li>
+                                <a href="questions-index.html">Questions</a>
+                            </li>
+                            <li>
+                                <a href="themes.html">Thèmes</a>
+                            </li>
+                            <li class="active">
+                                <a href="epreuves-index.html">Epreuves<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li>
+                                <a href="../login.html">Deconnexion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- end navigation -->
+            <div class="row">
+                <h1 style="text-align:center;">Liste des épreuves</h1>
+                <div class="col-sm-12">
+                    <button class="btn btn-info" id="addEpreuve" type="button">Ajouter une épreuve</button>
+                </div>
+                <table class="table table-hover table-stripped">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>Nom épreuve</th>
+                            <th>Date de création</th>
+                            <th>Nombre de questions</th>
+                            <th>Durée</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var baseURL = 'http://10.1.0.174:8080/';
+            $.ajax({
+                url: baseURL + 'EniQuest2017/rest/epreuves',
+                success: function(data) {
+                    $('table tbody').empty();
+                    if (data) {
+                        $.each(data, function(key, v) {
+                            var btnDetail = '<button type"button" class="btn-edit btn btn-warning">' +
+                                '<span class="glyphicon glyphicon-edit"></span>' +
+                                '</button>';
+                            $('table tbody').append('<tr id="' + v.idEpreuve + '">' +
+                                '<td>' + v.libelleEpreuve + '</td>' +
+                                '<td>' + v.dateCreation + '</td>' +
+                                '<td>' + v.nbrQuestion + '</td>' +
+                                '<td>' + v.tempsEpreuve + ' min</td>' +
+                                '<td>' + btnDetail + '</td>' +
+                                '</tr>');
+                        });
+                    }
+                }
+            });
+
+            $('#addEpreuve').click(function() {
+                window.location.href = 'epreuve-creation.html';
+            });
+            $('table tbody').on('click', '.btn-edit', function() {
+                var idTr = $(this).parent().parent().attr('id');
+                window.location.href = 'epreuve-edit.html?idEpreuve=' + idTr;
+            });
+        });
+    </script>
+</body>
+
+</html>

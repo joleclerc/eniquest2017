@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <title>Questions d'un thème</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="index.html">Accueil</a>
+                            </li>
+                            <li>
+                                <a href="questions-index.html">Questions</a>
+                            </li>
+                            <li>
+                                <a href="themes.html">Thèmes</a>
+                            </li>
+                            <li>
+                                <a href="epreuves-index.html">Epreuves</a>
+                            </li>
+                            <li>
+                                <a href="../login.html">Deconnexion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- end navigation -->
+            <div class="row">
+                <h1 style="text-align:center;" id="titreTheme"></h1>
+                <div class="col-sm-12">
+                    <button class="btn btn-info" id="displayAddQuestion" type="button">Ajouter une question</button>
+                </div>
+                <div class="col-sm-12" id="listeQuestions" style="padding-top:15px;"></div>
+                <div class="col-sm-12">
+                    <form class="form-horizontal" id="ajoutQuestionForm">
+                        <div class="form-group">
+                            <label for="intitule" class="col-sm-1 control-label">Intitulé Question</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" name="intitule">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">Type de réponse</label>
+                            <div class="btn-group col-sm-11" data-toggle="buttons">
+                                <label class="btn btn-info active">
+                                    <input type="radio" name="type" value="unique" autocomplete="off" checked> Unique
+                                </label>
+                                <label class="btn btn-info">
+                                    <input type="radio" name="type" value="multiple" autocomplete="off">Multiple
+                                </label>
+                                <label class="btn btn-info">
+                                    <input type="radio" name="type" value="order" autocomplete="off">Order
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" id="zoneReponse"></div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-11">
+                                <button id="addQuestion" type="submit" class="btn btn-primary">Créer question</button>
+                                <button id="cancelQuestion" type="reset" class="btn btn-danger">Annuler</button>
+                                <button id="addReponse" type="button" class="btn btn-success">Ajouter une réponse</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+            var baseURL = 'http://10.1.0.174:8080/';
+            var idTheme = location.search.split('=')[1];
+            $('#ajoutQuestionForm').hide();
+            $.ajax({
+                url: baseURL + 'EniQuest2017/rest/question/theme',
+                data: {
+                    idTheme: idTheme,
+                },
+                type: 'GET',
+                success: function(data) {
+                    if (data) {
+                        $('#titreTheme').text('Thème : ' + data.theme.libelleTheme);
+                        $.each(data.questions, function(key, v) {
+                            var btnSuppr = '<button type"button" class="btn-suppr btn btn-danger" style="float:right;margin-top:-40px;">' +
+                                '<span class="glyphicon glyphicon-trash"></span>' +
+                                '</button>';
+                            var btnSeeReponses = '<button type"button" class="btn-see-reponses btn btn-info glyphicon glyphicon-triangle-bottom" style="float:right;"></button>';
+                            var divReponses = '<p>Type de réponse : ' + v.typeReponse + '<br>Réponses : <br></p>';
+                            var divReponses2 = '';
+                            $.each(v.reponses, function(keyRep, rep) {
+                                if (v.typeReponse == 'unique') {
+                                    var isChecked = (rep.isValid == 1) ? "checked" : "";
+                                    divReponses2 += '<p>' + rep.libelleReponse + ' <input type="checkbox" ' + isChecked + ' disabled></p><br>';
+                                } else if (v.typeReponse == 'order') {
+                                    divReponses2 = '<p>' + rep.position + '  ' + rep.libelleReponse + '</p><br>';
+                                }
+                            });
+                            var divQ = '<div class="panel panel-primary" id="' + v.idQuestion + '">' +
+                                '<div class="panel-heading"><h4>' + v.intitule + '</h4> ' + btnSuppr +
+                                '</div><div class="panel-body">' + btnSeeReponses + '<div hidden>' + divReponses + divReponses2 + '</div></div></div>';
+                            $('#listeQuestions').append(divQ);
+                        });
+                    }
+                }
+            });
+
+            $('#listeQuestions').on('click', '.btn-suppr', function() {
+                var idQuestion = $(this).parent().parent().attr('id');
+                $.ajax({
+                    url: baseURL + 'EniQuest2017/rest/question/delete',
+                    data: {
+                        idQuestion: idQuestion
+                    },
+                    success: function(data) {
+                        if (data && data == 1) {
+                            location.reload();
+                        } else {
+                            alert('Problème lors de la suppression.');
+                        }
+                    }
+                });
+            });
+
+            $('#listeQuestions').on('click', '.btn-see-reponses', function() {
+                if ($(this).parent().find($('div')).is(":visible")) {
+                    $(this).parent().find($('div')).hide();
+                } else {
+                    $(this).parent().find($('div')).show();
+                }
+                if ($(this).hasClass('glyphicon-triangle-top')) {
+                    $(this).removeClass('glyphicon-triangle-top');
+                    $(this).addClass('glyphicon-triangle-bottom');
+                } else {
+                    $(this).removeClass('glyphicon-triangle-bottom');
+                    $(this).addClass('glyphicon-triangle-top');
+                }
+            });
+            $('#displayAddQuestion').click(function() {
+                $('#ajoutQuestionForm').show();
+                // scroll to add question form.
+                $('html, body').animate({
+                    scrollTop: $("#ajoutQuestionForm").offset().top
+                }, 500);
+            });
+            $('#addReponse').click(function() {
+                var type = $('input[name="type"]:checked').val();
+                if (type == 'unique' || type == 'multiple') {
+                    $('#zoneReponse').append('<div class="form-group reponse">' +
+                        '<label for="intitule" class="col-sm-1 control-label">Intitulé Réponse</label><div class="col-sm-6">' +
+                        '<input type="text" class="form-control" name="intitule"></div>' +
+                        '<label for="isValid" class="col-sm-1 control-label">Valide ?</label>' +
+                        '<input type="checkbox" name="isValid"><input type="hidden" name="position" value="null"></div>');
+                } else if (type == 'order') {
+                    $('#zoneReponse').append('<div class="form-group reponse">' +
+                        '<label for="intitule" class="col-sm-1 control-label">Intitulé Réponse</label><div class="col-sm-6">' +
+                        '<input type="text" class="form-control" name="intitule"></div>' +
+                        '<input type="hidden" name="isValid" value="null">' +
+                        '<label for="position">Position</label><input type="number" name="position" value="1" min="1"></div>');
+                }
+            });
+            $('#addQuestion').click(function(e) {
+                e.preventDefault();
+                var listeReponses = [];
+                $('#zoneReponse .reponse').each(function() {
+                    listeReponses.push({
+                        "idReponse": 0,
+                        "libelleReponse": $(this).find('input[name="intitule"]').val(),
+                        "isValid": $(this).find('input[name="isValid"]').is(':checked'),
+                        "position": ($(this).find('input[name="position"]').val() == "null") ? '0' : $(this).find('input[name="position"]').val()
+                    });
+                });
+                var postData = {
+                    idTheme: idTheme,
+                    idQuestion: 0,
+                    typeReponse: $('input[name="type"]:checked').val(),
+                    intitule: $('input[name="intitule"]').val(),
+                    lienImage: null,
+                    reponses: JSON.stringify(listeReponses),
+                };
+                $.ajax({
+                    url: baseURL + 'EniQuest2017/rest/question/save',
+                    data: postData,
+                    type: 'POST',
+                    success: function(data) {
+                        if (data) {
+                            location.reload();
+                        }
+                    }
+                });
+            });
+
+            // Click sur type de réponse -> vide la div.
+            $('input[name="type"]').change(function() {
+                $('#zoneReponse').empty();
+            })
+        });
+    </script>
+</body>
+
+</html>

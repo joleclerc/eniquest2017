@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <title>Accueil Formateur</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="#">Accueil<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li>
+                                <a href="questions-index.html">Questions</a>
+                            </li>
+                            <li>
+                                <a href="themes.html">Thèmes</a>
+                            </li>
+                            <li>
+                                <a href="epreuves-index.html">Epreuves</a>
+                            </li>
+                            <li>
+                                <a href="../login.html">Deconnexion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- end navigation -->
+            <div class="row">
+                <h1 style="text-align:center;">Accueil Formateur</h1>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+            var baseURL = 'http://10.1.0.174:8080/';
+            $('form').submit(function(e) {
+                e.preventDefault();
+                console.log('submit');
+                $.ajax({
+                    url: baseURL + 'EniQuest2017/rest/login',
+                    data: {
+                        login: $('input[name="username"]').val(),
+                        pw: $('input[name="password"]').val(),
+                    },
+                    success: function(data) {
+                        console.log('data', data);
+                    }
+                })
+            });
+        })
+    </script>
+</body>
+
+</html>
