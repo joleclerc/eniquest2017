@@ -14,5 +14,7 @@ public interface ReponseService {
 	public void updateReponse(Reponse reponse);
 	
 	public List<Reponse> getReponseForQuestion(Question question);
+	
+	public void deleteReponse(int idQuestion);
 
 }

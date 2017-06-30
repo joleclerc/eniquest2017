@@ -25,6 +25,8 @@ public class ReponseDAOImpl implements ReponseDAO{
 	private final String UPDATE_REPONSE = "UPDATE reponse "
 									+ "SET libelleReponse = ?, lienImage = ?, position = ?, "
 									+ "isValid = ? WHERE idReponse = ?";
+	private final String DELETE_REPONSE = "DELETE FROM reponse "
+									+ "WHERE Question_idQuestion = ?";
 	
 	public ReponseDAOImpl() {
 	
@@ -171,4 +173,33 @@ public class ReponseDAOImpl implements ReponseDAO{
 		return reponses;
 	}
 
+	public void deleteReponse(int idQuestion) {
+		Connection con = null;
+		PreparedStatement stmt;
+		
+		try {
+			con = daoFactory.getConnection();
+			stmt = con.prepareStatement(DELETE_REPONSE);
+			stmt.setInt(1, idQuestion);
+			
+			// execute la requete
+			boolean res = stmt.execute();
+
+			if(res)
+				System.out.println("Reponse not deleted");
+			else
+				System.out.println("Reponse deleted");
+			
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 }

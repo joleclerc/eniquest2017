@@ -46,6 +46,7 @@ public class QuestionServiceImpl implements QuestionService{
 
 	@Override
 	public int deleteQuestion(int idQuestion) {
+		this.daoFactory.getReponseDAO().deleteReponse(idQuestion);
 		return this.daoFactory.getQuestionDAO().deleteQuestion(idQuestion);
 		
 	}

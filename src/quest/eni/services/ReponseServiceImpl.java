@@ -38,5 +38,9 @@ public class ReponseServiceImpl implements ReponseService{
 		return this.daoFactory.getReponseDAO().getReponseForQuestion(question);
 	}
 
+	@Override
+	public void deleteReponse(int idQuestion) {
+		this.daoFactory.getReponseDAO().deleteReponse(idQuestion);
+	}
 		
 }

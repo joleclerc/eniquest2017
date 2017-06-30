@@ -15,4 +15,6 @@ public interface ReponseDAO {
 	
 	public List<Reponse> getReponseForQuestion(Question question);
 	
+	public void deleteReponse(int idQuestion);
+	
 }
