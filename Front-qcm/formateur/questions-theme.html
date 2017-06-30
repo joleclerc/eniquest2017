@@ -100,7 +100,7 @@
                             var divReponses = '<p>Type de réponse : ' + v.typeReponse + '<br>Réponses : <br></p>';
                             var divReponses2 = '';
                             $.each(v.reponses, function(keyRep, rep) {
-                                if (v.typeReponse == 'unique') {
+                                if (v.typeReponse == 'unique' || v.typeReponse == 'multiple') {
                                     var isChecked = (rep.isValid == 1) ? "checked" : "";
                                     divReponses2 += '<p>' + rep.libelleReponse + ' <input type="checkbox" ' + isChecked + ' disabled></p><br>';
                                 } else if (v.typeReponse == 'order') {
